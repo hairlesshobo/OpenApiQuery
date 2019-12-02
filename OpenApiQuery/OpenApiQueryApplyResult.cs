@@ -2,6 +2,7 @@ namespace OpenApiQuery
 {
     public class OpenApiQueryApplyResult<T>
     {
+        internal OpenApiQueryOptions<T> Options { get; set; }
         /// <summary>
         /// Total number of items avaailable based on the current filter. Only populated when
         /// $count=true option is used in filter.
@@ -16,9 +17,10 @@ namespace OpenApiQuery
         public OpenApiQueryApplyResult()
         {
         }
-        
-        public OpenApiQueryApplyResult(T[] resultItems, long? totalCount)
+
+        internal OpenApiQueryApplyResult(OpenApiQueryOptions<T> options, T[] resultItems, long? totalCount)
         {
+            Options = options;
             ResultItems = resultItems;
             TotalCount = totalCount;
         }

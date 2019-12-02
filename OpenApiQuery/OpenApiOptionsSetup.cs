@@ -1,20 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OpenApiQuery.Parsing;
+using OpenApiQuery.Serialization;
+using OpenApiQuery.Serialization.SystemText;
 
 namespace OpenApiQuery
 {
-    internal class OpenApiOptionsSetup : IConfigureOptions<MvcOptions>
+    internal class OpenApiOptionsSetup : IConfigureOptions<JsonOptions>
     {
-        private readonly IOptions<JsonOptions> _jsonOptions;
+        private readonly IOpenApiTypeHandler _typeHandler;
 
-        public OpenApiOptionsSetup(IOptions<JsonOptions> jsonOptions)
+        public OpenApiOptionsSetup(IOpenApiTypeHandler typeHandler)
         {
-            _jsonOptions = jsonOptions;
+            _typeHandler = typeHandler;
         }
-        public void Configure(MvcOptions options)
+
+        public void Configure(JsonOptions options)
         {
-            var formatter = new OpenApiQueryResultOutputFormatter(_jsonOptions.Value.JsonSerializerOptions);
-            options.OutputFormatters.Insert(0, formatter);
+            options.JsonSerializerOptions.Converters.Insert(0, new OpenApiQueryConverterFactory(_typeHandler));
         }
     }
 }
