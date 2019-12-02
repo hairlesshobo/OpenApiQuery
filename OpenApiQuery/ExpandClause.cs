@@ -116,7 +116,7 @@ namespace OpenApiQuery
                                       select.SelectClauses.Count == 0;
 
             var memberBindings = new List<MemberBinding>();
-            foreach (var property in itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            foreach (var property in itemType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.CanWrite))
             {
                 if (expands.TryGetValue(property, out var expand))
                 {
