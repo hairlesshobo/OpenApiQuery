@@ -594,6 +594,14 @@ namespace OpenApiQuery.Parsing
                 }
             }
 
+            if (toPromote.Type == typeof(DateTime))
+            {
+                if (otherType == typeof(DateTimeOffset))
+                {
+                    return Expression.Convert(toPromote, otherType);
+                }
+            }
+
             return toPromote;
         }
 
